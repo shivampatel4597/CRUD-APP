@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Courses</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav
+        class="navbar navbar-expand-lg bg-primary bg-body-primary "
+      >
+        <div class="container-fluid">
+          <a class="navbar-brand text-light fs-1" href="#">CRUD APP</a>
+        
+              
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success text-bg-danger" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="container mt-5 col-6">
+        <div class="input-group mb-3 ">
+          <input
+            type="text"
+            class="form-control  "
+            placeholder="write here"
+            aria-label="Recipient's username"
+            aria-describedby="button-addon2"
+          />
+          <button
+            id="add_btn"
+            class="btn btn-outline-success"
+            type="button"
+            id="button-addon2"
+          >
+            ADD
+          </button>
+        </div>
+        <ul class="list-group" id="parent_list">
+          <li class="list-group-item d-flex justify-content-between">
+            <h3 class="flex-grow-1">Your List</h3>
+            <button class="btn btn-warning mx-3" onclick="editChapter(this)">
+              Edit
+            </button>
+            <button class="btn btn-danger" onclick="removeChapter(this)">
+              Remove
+            </button>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <script>
+      // adding
+      let addBtn = document.getElementById("add_btn");
+      addBtn.addEventListener("click", addChapter);
+      // Undorder list
+      let parentList = document.getElementById("parent_list");
+
+      // add function
+      function addChapter(e) {
+        if (
+          parentList.children[0].classList.contains("emptyMsg") ||
+          parentList.children[0].classList.contains("text-center")
+        ) {
+          parentList.children[0].remove();
+        }
+        let currentBtn = e.currentTarget;
+        let currentInput = currentBtn.previousElementSibling;
+        console.log(currentInput.value);
+        let currentChapterName = currentInput.value;
+
+        let newLi = document.createElement("li");
+        // newLi.classList.add("list-group-item");
+        newLi.className = "list-group-item d-flex justify-content-between ";
+        // newLi.textContent = currentInput.value;
+        newLi.innerHTML = ` <h3 class="flex-grow-1">${currentChapterName}</h3>
+            <button class="btn btn-warning mx-3" onclick="editChapter(this)">Edit</button>
+            <button class="btn btn-danger"  onclick="removeChapter(this)">Remove</button>`;
+        console.log(newLi);
+
+        parentList.appendChild(newLi);
+      }
+
+      // removing function
+      function removeChapter(currentElement) {
+        currentElement.parentElement.remove();
+
+        if (parentList.children.length <= 0) {
+          console.log("nothing here");
+          let newMsg = document.createElement("h3");
+          // newMsg.className = "text-center";
+          // check
+          newMsg.classList.add("emptyMsg", "text-center");
+
+          newMsg.textContent = "nothing is here please add sth here";
+          parentList.append(newMsg);
+        }
+      }
+
+      //edit function
+      function editChapter(currentElement) {
+        if (currentElement.textContent == "Done") {
+          currentElement.textContent = "Edit";
+          let currentChapterName = currentElement.previousElementSibling.value;
+          let currentHeading = document.createElement("h3");
+          currentHeading.className = "flex-grow-1";
+          currentHeading.textContent = currentChapterName;
+          currentElement.parentElement.replaceChild(
+            currentHeading,
+            currentElement.previousElementSibling
+          );
+        } else {
+          currentElement.textContent = "Done";
+          let currentChapterName =
+            currentElement.previousElementSibling.textContent;
+          let currentInput = document.createElement("input");
+          currentInput.type = "text";
+          currentInput.placeholder = "write your priority";
+          currentInput.className = "form-control";
+          currentInput.value = currentChapterName;
+
+          currentElement.parentElement.replaceChild(
+            currentInput,
+            currentElement.previousElementSibling
+          );
+        }
+      }
+    </script>
+  </body>
+</html>
